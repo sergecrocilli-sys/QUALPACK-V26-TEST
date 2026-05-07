@@ -5044,6 +5044,10 @@ function renderDashboard() {
 function renderDashboardPro() {
 
   const body = document.getElementById('dash-body');
+  const dateEl = document.getElementById('dash-date');
+if (dateEl) {
+  dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
+}
 
   body.innerHTML = `
     <div class="dash-block">
