@@ -6423,8 +6423,8 @@ async function manualSync() {
    SERVICE WORKER
    ================================================================ */
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js?v=25.2')
-    .then(() => console.log('SW enregistré v25.2'))
+  navigator.serviceWorker.register('./sw.js?v=26-test')
+    .then(() => console.log('SW enregistré v26-test'))
     .catch(e => console.warn('SW erreur', e));
 }
 
