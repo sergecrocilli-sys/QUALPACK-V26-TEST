@@ -5560,14 +5560,18 @@ function renderDashboardPro() {
     : 0;
 
  const totalMesures = pF.reduce((acc, s) => {
-  const direct =
-    Number(s.nb_pesees) ||
-    Number(s.nbPesees) ||
-    Number(s.pesees) ||
-    Number(s.nb_mesures) ||
-    Number(s.nbMesures) ||
-    Number(s.n) ||
-    0;
+  if (Array.isArray(s.pesees)) return acc + s.pesees.length;
+  if (Array.isArray(s.v)) return acc + s.v.length;
+  if (Array.isArray(s.valeurs)) return acc + s.valeurs.length;
+  if (Array.isArray(s.poids)) return acc + s.poids.length;
+
+  return acc
+    + (Number(s.nb_pesees) || 0)
+    + (Number(s.nbPesees) || 0)
+    + (Number(s.nb_mesures) || 0)
+    + (Number(s.nbMesures) || 0)
+    + (Number(s.n) || 0);
+}, 0);
 
   if (direct > 0) return acc + direct;
 
