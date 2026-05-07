@@ -5644,7 +5644,9 @@ function renderDashboardPro() {
       };
     }
     ofMap[of].controles += 1;
-    ofMap[of].pesees += Array.isArray(s.v) ? s.v.length : 0;
+    ofMap[of].pesees += Array.isArray(s.pesees)
+      ? s.pesees.length
+      : (Array.isArray(s.v) ? s.v.length : 0);
     ofMap[of].conformes += s.vF === 'ok' ? 1 : 0;
     ofMap[of].nc += s.vF !== 'ok' ? 1 : 0;
     ofMap[of].tu1 += Number(s.tu1) || Number(s.nbTU1) || 0;
