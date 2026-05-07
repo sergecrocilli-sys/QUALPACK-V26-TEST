@@ -441,6 +441,67 @@ html, body {
   .dash-filters-grid { grid-template-columns: 1fr 1fr 1fr; }
 }
 
+/* ============================================================
+   DASHBOARD QUALITÉ PRO V26
+   ============================================================ */
+
+.dash-pro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dash-pro-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 18px;
+}
+
+.dpc-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 10px;
+}
+
+.dpc-value {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.dpc-value.green {
+  color: var(--green-text);
+}
+
+.dpc-value.orange {
+  color: var(--orange-text);
+}
+
+.dpc-value.red {
+  color: var(--red-text);
+}
+
+@media (max-width: 1100px) {
+
+  .dash-pro-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .dash-pro-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
 /* ---- STEP INDICATOR ---- */
 .step-indicator {
   display: flex; align-items: center; gap: 0;
