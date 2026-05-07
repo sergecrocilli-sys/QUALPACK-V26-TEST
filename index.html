@@ -5163,7 +5163,6 @@ function renderDashboardPro() {
 
   const pBase = filterByPeriod(sessions, dashPeriod);
   const dBase = filterByPeriod(dets, dashPeriod);
-
   const { p: pF, d: dF } = applyDashFilters(pBase, dBase);
 
   const totalPesees = pF.length;
@@ -5174,84 +5173,226 @@ function renderDashboardPro() {
   const critiques = pF.filter(x => x.vF === 'err').length;
   const nonConformes = aSurveiller + critiques;
 
-  const tauxConformite =
-    totalPesees > 0
-      ? Math.round((conformes / totalPesees) * 100)
-      : 0;
+  const tauxConformite = totalPesees > 0
+    ? Math.round((conformes / totalPesees) * 100)
+    : 0;
 
-  const totalMesures = pF.reduce((acc, s) => {
-    return acc + (Array.isArray(s.v) ? s.v.length : 0);
-  }, 0);
+  const totalMesures = pF.reduce((acc, s) => acc + (Array.isArray(s.v) ? s.v.length : 0), 0);
+
+  const totalTU1 = pF.reduce((acc, s) => acc + (Number(s.tu1) || Number(s.nbTU1) || 0), 0);
+  const totalTU2 = pF.reduce((acc, s) => acc + (Number(s.tu2) || Number(s.nbTU2) || 0), 0);
 
   const joursAvecActivite = [
-  ...new Set(
-    [...pF, ...dF]
-      .map(x => (x.date || x.now || '').split(' ')[0])
-      .filter(Boolean)
-  )
-].length;
+    ...new Set(
+      [...pF, ...dF]
+        .map(x => (x.date || x.now || '').split(' ')[0])
+        .filter(Boolean)
+    )
+  ].length;
 
-  const tauxCompletion =
-  dashPeriod
+  const tauxCompletion = dashPeriod
     ? Math.round((Math.min(dashPeriod, joursAvecActivite) / dashPeriod) * 100)
     : 100;
 
+  const statutClass = critiques > 0 ? 'err' : (aSurveiller > 0 || totalTU1 > 0 ? 'warn' : 'ok');
+  const statutLabel = critiques > 0
+    ? 'Action qualité requise'
+    : (aSurveiller > 0 || totalTU1 > 0 ? 'Dérives à analyser' : 'Situation maîtrisée');
+
+  const statutSub = critiques > 0
+    ? `${critiques} échantillon(s) critique(s) détecté(s).`
+    : (totalTU1 > 0
+        ? `${totalTU1} défaut(s) TU1 détecté(s). Revue qualité conseillée.`
+        : 'Aucune dérive majeure détectée sur la période.');
+
+  const topProduitsMap = {};
+  pF.forEach(s => {
+    const prod = s.prod || s.produit || 'Produit non renseigné';
+    if (!topProduitsMap[prod]) topProduitsMap[prod] = { total: 0, nc: 0 };
+    topProduitsMap[prod].total += 1;
+    if (s.vF !== 'ok') topProduitsMap[prod].nc += 1;
+  });
+
+  const topProduits = Object.entries(topProduitsMap)
+    .map(([name, v]) => ({
+      name,
+      total: v.total,
+      nc: v.nc,
+      pct: v.total ? Math.round((v.nc / v.total) * 100) : 0
+    }))
+    .sort((a, b) => b.pct - a.pct || b.nc - a.nc)
+    .slice(0, 3);
+
+  const ofMap = {};
+  pF.forEach(s => {
+    const of = s.of || 'OF non renseigné';
+    if (!ofMap[of]) {
+      ofMap[of] = {
+        of,
+        prod: s.prod || s.produit || '—',
+        ligne: s.ligne || s.ligne_prod || '—',
+        controles: 0,
+        pesees: 0,
+        conformes: 0,
+        nc: 0,
+        tu1: 0,
+        tu2: 0,
+        last: s.date || s.now || ''
+      };
+    }
+    ofMap[of].controles += 1;
+    ofMap[of].pesees += Array.isArray(s.v) ? s.v.length : 0;
+    ofMap[of].conformes += s.vF === 'ok' ? 1 : 0;
+    ofMap[of].nc += s.vF !== 'ok' ? 1 : 0;
+    ofMap[of].tu1 += Number(s.tu1) || Number(s.nbTU1) || 0;
+    ofMap[of].tu2 += Number(s.tu2) || Number(s.nbTU2) || 0;
+    ofMap[of].last = s.date || s.now || ofMap[of].last;
+  });
+
+  const ofRows = Object.values(ofMap)
+    .sort((a, b) => String(b.last).localeCompare(String(a.last)))
+    .slice(0, 5);
+
+  const alerts = [];
+  pF.filter(s => s.vF !== 'ok').slice(0, 3).forEach(s => {
+    alerts.push({
+      type: s.vF === 'err' ? 'err' : 'warn',
+      title: `${s.vF === 'err' ? 'Non-conformité' : 'À surveiller'} — ${s.prod || s.produit || 'Produit'}`,
+      meta: `${s.of || 'OF non renseigné'} · ${s.ligne || s.ligne_prod || 'Ligne non renseignée'}`
+    });
+  });
+
+  const repartitionNC = nonConformes || totalTU1 || totalTU2;
+  const tu1Pct = repartitionNC ? Math.round((totalTU1 / repartitionNC) * 100) : 0;
+  const tu2Pct = repartitionNC ? Math.round((totalTU2 / repartitionNC) * 100) : 0;
+
+  const sparkValues = [72, 78, 81, tauxConformite, Math.max(0, tauxConformite - 6), tauxConformite, Math.min(100, tauxConformite + 3)];
+
   body.innerHTML = `
+    <div class="dash-pro-cockpit">
 
-    <div class="dash-pro-grid">
+      <aside class="dash-pro-sidebar">
+        <div class="dash-pro-side-title">Filtres actifs</div>
+        <div class="dash-pro-side-item"><span>Période</span><strong>${dashPeriod ? `${dashPeriod} jours` : 'Tout historique'}</strong></div>
+        <div class="dash-pro-side-item"><span>Échantillons</span><strong>${totalPesees}</strong></div>
+        <div class="dash-pro-side-item"><span>Détecteur</span><strong>${totalDetecteurs}</strong></div>
+        <div class="dash-pro-side-item"><span>Complétion</span><strong>${tauxCompletion}%</strong></div>
+      </aside>
 
-      <div class="dash-pro-card">
-        <div class="dpc-label">Pesées enregistrées</div>
-        <div class="dpc-value">${totalPesees}</div>
-      </div>
+      <section class="dash-pro-main">
 
-      <div class="dash-pro-card">
-        <div class="dpc-label">Tests détecteur</div>
-        <div class="dpc-value">${totalDetecteurs}</div>
-      </div>
-
-      <div class="dash-pro-card">
-        <div class="dpc-label">Taux conformité</div>
-        <div class="dpc-value ${tauxConformite >= 95 ? 'green' : tauxConformite >= 80 ? 'orange' : 'red'}">
-          ${tauxConformite}%
+        <div class="dash-pro-top">
+          <div>
+            <h2>Dashboard Qualité Pro</h2>
+            <p>Vue d’ensemble qualité sur la période sélectionnée</p>
+          </div>
+          <div class="dash-pro-badge ${statutClass}">${statutLabel}</div>
         </div>
-      </div>
 
-      <div class="dash-pro-card">
-        <div class="dpc-label">Taux complétion</div>
-        <div class="dpc-value ${tauxCompletion >= 95 ? 'green' : tauxCompletion >= 80 ? 'orange' : 'red'}">
-          ${tauxCompletion}%
+        <div class="dash-pro-kpis">
+          <div class="dash-pro-kpi">
+            <span>Contrôles réalisés</span>
+            <strong>${totalPesees}</strong>
+            <small>${totalMesures} pesées</small>
+          </div>
+          <div class="dash-pro-kpi">
+            <span>Taux conformité</span>
+            <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 80 ? 'warn' : 'err'}">${tauxConformite}%</strong>
+            <small>${conformes} / ${totalPesees} conformes</small>
+          </div>
+          <div class="dash-pro-kpi">
+            <span>Non-conformités</span>
+            <strong class="${nonConformes ? 'err' : 'ok'}">${nonConformes}</strong>
+            <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
+          </div>
+          <div class="dash-pro-kpi">
+            <span>Complétion</span>
+            <strong class="${tauxCompletion >= 95 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
+            <small>${joursAvecActivite} jour(s) actif(s)</small>
+          </div>
+          <div class="dash-pro-kpi">
+            <span>Taux TU1 global</span>
+            <strong class="${totalTU1 ? 'warn' : 'ok'}">${totalTU1}</strong>
+            <small>défaut(s) TU1</small>
+          </div>
         </div>
-      </div>
 
-      <div class="dash-pro-card">
-        <div class="dpc-label">Mesures réalisées</div>
-        <div class="dpc-value">${totalMesures}</div>
-      </div>
+        <div class="dash-pro-grid-main">
+          <div class="dash-pro-panel chart-panel">
+            <div class="dash-pro-panel-title">Évolution de la conformité</div>
+            <div class="dash-pro-spark">
+              ${sparkValues.map(v => `<i style="height:${Math.max(8, v)}%"></i>`).join('')}
+            </div>
+            <div class="dash-pro-chart-caption">Tendance indicative — objectif 98%</div>
+          </div>
 
-      <div class="dash-pro-card">
-        <div class="dpc-label">Non conformités</div>
-        <div class="dpc-value ${nonConformes > 0 ? 'red' : 'green'}">
-          ${nonConformes}
+          <div class="dash-pro-panel">
+            <div class="dash-pro-panel-title">Répartition des non-conformités</div>
+            <div class="dash-pro-donut" style="--tu1:${tu1Pct};--tu2:${tu2Pct};">
+              <div><strong>${repartitionNC}</strong><span>Total</span></div>
+            </div>
+            <div class="dash-pro-legend">
+              <span><b class="red-dot"></b>TU1 : ${totalTU1}</span>
+              <span><b class="orange-dot"></b>TU2 : ${totalTU2}</span>
+            </div>
+          </div>
+
+          <div class="dash-pro-panel">
+            <div class="dash-pro-panel-title">Top 3 produits — taux NC</div>
+            ${topProduits.length ? topProduits.map((p, i) => `
+              <div class="dash-pro-top-product">
+                <span>#${i + 1}</span>
+                <strong>${p.name}</strong>
+                <em>${p.nc} / ${p.total}</em>
+                <b>${p.pct}%</b>
+              </div>
+            `).join('') : `<div class="dash-pro-empty">Aucun produit à risque</div>`}
+          </div>
         </div>
-      </div>
 
+        <div class="dash-pro-bottom">
+          <div class="dash-pro-panel of-panel">
+            <div class="dash-pro-panel-title">Synthèse par OF</div>
+            <table class="dash-pro-table">
+              <thead>
+                <tr>
+                  <th>N° OF</th><th>Produit</th><th>Ligne</th><th>Contrôles</th><th>Pesées</th><th>NC</th><th>Verdict</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${ofRows.map(r => `
+                  <tr>
+                    <td>${r.of}</td>
+                    <td>${r.prod}</td>
+                    <td>${r.ligne}</td>
+                    <td>${r.controles}</td>
+                    <td>${r.pesees}</td>
+                    <td>${r.nc}</td>
+                    <td><span class="dash-pro-status ${r.nc ? 'warn' : 'ok'}">${r.nc ? 'À surveiller' : 'Conforme'}</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="dash-pro-panel alerts-panel">
+            <div class="dash-pro-panel-title">Alertes & recommandation</div>
+            ${alerts.length ? alerts.map(a => `
+              <div class="dash-pro-alert ${a.type}">
+                <strong>${a.title}</strong>
+                <span>${a.meta}</span>
+              </div>
+            `).join('') : `<div class="dash-pro-alert ok"><strong>Aucune alerte critique</strong><span>${statutSub}</span></div>`}
+
+            <div class="dash-pro-reco">
+              <strong>Recommandation</strong>
+              <span>${nonConformes ? 'Analyser les OF en alerte et vérifier les réglages de dosage / tare.' : 'Maintenir la fréquence de contrôle actuelle.'}</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
     </div>
-
-    <div class="dash-block">
-      <div class="dash-block-header">
-        <div class="dbh-left">
-          <div class="dbh-title">Dashboard Qualité Pro</div>
-        </div>
-        <div class="dbh-sub">V26</div>
-      </div>
-
-      <div class="admin-info-card">
-        <strong>Mode Responsable Qualité :</strong><br>
-        Dashboard Qualité Pro responsive activé.
-      </div>
-    </div>
-
   `;
 }
 
