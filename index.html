@@ -5676,13 +5676,54 @@ function renderDashboardPro() {
         </div>
 
         <div class="dash-pro-grid-main">
-          <div class="dash-pro-panel chart-panel">
-            <div class="dash-pro-panel-title">Évolution de la conformité</div>
-            <div class="dash-pro-spark">
-              ${sparkValues.map(v => `<i style="height:${Math.max(8, v)}%"></i>`).join('')}
-            </div>
-            <div class="dash-pro-chart-caption">Tendance indicative — objectif 98%</div>
-          </div>
+         <div class="dash-pro-panel chart-panel">
+  <div class="dash-pro-panel-title">Évolution de la conformité</div>
+
+  <div class="dash-pro-linechart">
+
+    <svg viewBox="0 0 320 140" preserveAspectRatio="none">
+
+      <!-- ligne objectif -->
+      <line
+        x1="0"
+        y1="20"
+        x2="320"
+        y2="20"
+        class="dash-pro-target-line"
+      />
+
+      <!-- courbe -->
+      <polyline
+        fill="none"
+        stroke="${tauxConformite >= 95 ? '#3ecf8e' : tauxConformite >= 80 ? '#ffb84d' : '#ff5d5d'}"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        points="
+          0,90
+          50,72
+          100,65
+          150,${120 - tauxConformite}
+          200,${130 - Math.max(55, tauxConformite - 8)}
+          260,${120 - tauxConformite}
+          320,${115 - tauxConformite}
+        "
+      />
+
+      <!-- points -->
+      <circle cx="0" cy="90" r="4" class="dash-pro-point"/>
+      <circle cx="50" cy="72" r="4" class="dash-pro-point"/>
+      <circle cx="100" cy="65" r="4" class="dash-pro-point"/>
+      <circle cx="150" cy="${120 - tauxConformite}" r="5" class="dash-pro-point active"/>
+
+    </svg>
+
+  </div>
+
+  <div class="dash-pro-chart-caption">
+    Tendance indicative — objectif qualité 98%
+  </div>
+</div>
 
           <div class="dash-pro-panel">
             <div class="dash-pro-panel-title">Répartition des non-conformités</div>
