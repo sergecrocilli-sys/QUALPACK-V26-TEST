@@ -4991,6 +4991,10 @@ doc.text(split(alertText, 165), 20, y3 + 15.5);
   }
 }
 
+/* ============================================================
+   DASHBOARD MOBILE
+   ============================================================ */
+  
 function renderDashboardMobile() {
   const body = document.getElementById('dash-body');
   const dateEl = document.getElementById('dash-date');
@@ -5015,6 +5019,47 @@ function renderDashboardMobile() {
     buildBlocActions(pF, dF) +
     buildBlocSync(pF, dF) +
     '<div style="height:16px"></div>';
+}
+
+  /* ============================================================
+   DASHBOARD RESPONSIVE V26
+   ============================================================ */
+
+function renderDashboard() {
+
+  // TABLETTE / PC
+  if (window.innerWidth >= 768) {
+    renderDashboardPro();
+    return;
+  }
+
+  // SMARTPHONE
+  renderDashboardMobile();
+}
+
+/* ============================================================
+   DASHBOARD QUALITÉ PRO (placeholder V26)
+   ============================================================ */
+
+function renderDashboardPro() {
+
+  const body = document.getElementById('dash-body');
+
+  body.innerHTML = `
+    <div class="dash-block">
+      <div class="dash-block-header">
+        <div class="dbh-left">
+          <div class="dbh-title">Dashboard Qualité Pro</div>
+        </div>
+        <div class="dbh-sub">V26</div>
+      </div>
+
+      <div class="admin-info-card">
+        <strong>Mode Responsable Qualité :</strong><br>
+        Le Dashboard Qualité Pro responsive sera intégré dans la V26.
+      </div>
+    </div>
+  `;
 }
 
 /* ================================================================
