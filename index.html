@@ -5045,11 +5045,87 @@ function renderDashboardPro() {
 
   const body = document.getElementById('dash-body');
   const dateEl = document.getElementById('dash-date');
-if (dateEl) {
-  dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
-}
+
+  if (dateEl) {
+    dateEl.textContent = new Date().toLocaleDateString(
+      'fr-FR',
+      { weekday:'short', day:'numeric', month:'short' }
+    );
+  }
+
+  const pBase = filterByPeriod(sessions, dashPeriod);
+  const dBase = filterByPeriod(dets, dashPeriod);
+
+  const { p: pF, d: dF } = applyDashFilters(pBase, dBase);
+
+  const totalPesees = pF.length;
+  const totalDetecteurs = dF.length;
+
+  const conformes = pF.filter(x => x.verdict === 'OK').length;
+  const nonConformes = pF.filter(x => x.verdict !== 'OK').length;
+
+  const tauxConformite =
+    totalPesees > 0
+      ? Math.round((conformes / totalPesees) * 100)
+      : 0;
+
+  const totalMesures = pF.reduce((acc, s) => {
+    return acc + (Array.isArray(s.v) ? s.v.length : 0);
+  }, 0);
+
+  const completion = pF.reduce((acc, s) => {
+    const n = Array.isArray(s.v) ? s.v.length : 0;
+    const objectif = Number(s.n) || 20;
+    return acc + Math.min((n / objectif) * 100, 100);
+  }, 0);
+
+  const tauxCompletion =
+    totalPesees > 0
+      ? Math.round(completion / totalPesees)
+      : 0;
 
   body.innerHTML = `
+
+    <div class="dash-pro-grid">
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Pesées enregistrées</div>
+        <div class="dpc-value">${totalPesees}</div>
+      </div>
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Tests détecteur</div>
+        <div class="dpc-value">${totalDetecteurs}</div>
+      </div>
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Taux conformité</div>
+        <div class="dpc-value ${tauxConformite >= 95 ? 'green' : tauxConformite >= 80 ? 'orange' : 'red'}">
+          ${tauxConformite}%
+        </div>
+      </div>
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Taux complétion</div>
+        <div class="dpc-value ${tauxCompletion >= 95 ? 'green' : tauxCompletion >= 80 ? 'orange' : 'red'}">
+          ${tauxCompletion}%
+        </div>
+      </div>
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Mesures réalisées</div>
+        <div class="dpc-value">${totalMesures}</div>
+      </div>
+
+      <div class="dash-pro-card">
+        <div class="dpc-label">Non conformités</div>
+        <div class="dpc-value ${nonConformes > 0 ? 'red' : 'green'}">
+          ${nonConformes}
+        </div>
+      </div>
+
+    </div>
+
     <div class="dash-block">
       <div class="dash-block-header">
         <div class="dbh-left">
@@ -5060,9 +5136,10 @@ if (dateEl) {
 
       <div class="admin-info-card">
         <strong>Mode Responsable Qualité :</strong><br>
-        Le Dashboard Qualité Pro responsive sera intégré dans la V26.
+        Dashboard Qualité Pro responsive activé.
       </div>
     </div>
+
   `;
 }
 
