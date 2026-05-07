@@ -2304,7 +2304,7 @@ function getProductsForClientSelection(clientName = '') {
     return (CATALOGUE[clientName] || []).map(p => ({ ...p, _client: clientName }));
   }
 
-  // V25.1 : client facultatif => tous les produits restent sélectionnables.
+  // V26-test : client facultatif => tous les produits restent sélectionnables.
   const all = [];
   Object.entries(CATALOGUE || {}).forEach(([cli, products]) => {
     (products || []).forEach(p => all.push({ ...p, _client: cli }));
@@ -2425,7 +2425,7 @@ function chk1() {
       : document.getElementById('inp-of').value.trim()
     : document.getElementById('inp-of').value.trim();
 
-  // V25.1 : le client devient facultatif. Les champs obligatoires restent : produit, opérateur, OF.
+  // V26-test : le client devient facultatif. Les champs obligatoires restent : produit, opérateur, OF.
   const ok = document.getElementById('sel-produit').value
     && document.getElementById('sel-op').value
     && ofVal;
@@ -2446,7 +2446,7 @@ function getOFValue() {
 
 
 function getSampleSize() {
-  // V25.1 : nombre de pesées libre, défini par l'utilisateur.
+  // V26-test : nombre de pesées libre, défini par l'utilisateur.
   const v = parseInt(localStorage.getItem('qp_sample_size') || '20', 10);
   return Number.isFinite(v) && v >= 1 ? v : 20;
 }
@@ -2624,7 +2624,7 @@ document.getElementById('sc-tu1').className = 'stat-val' + (tu1 > maxTU1Live ? '
 function getMaxTU1Allowed(n) {
   const count = Number(n);
   if (!Number.isFinite(count) || count < 1) return 0;
-  // Règle V25.1 sécurisée : 2 % max, et 0 défaut TU1 autorisé sous 50 unités contrôlées.
+  // Règle V26-test sécurisée : 2 % max, et 0 défaut TU1 autorisé sous 50 unités contrôlées.
   return count < 50 ? 0 : Math.floor(count * 0.02);
 }
 
@@ -6209,7 +6209,7 @@ async function downloadTemplate() {
   ];
 
   XLSXLib.utils.book_append_sheet(wb, ws, 'IMPORT_APP');
-  XLSXLib.writeFile(wb, `QualPack_Template_${QUALPACK_SITE_ID}_V25.1.xlsx`);
+  XLSXLib.writeFile(wb, `QualPack_Template_${QUALPACK_SITE_ID}_V26-test.xlsx`);
 }
 
 /* ── Afficher catalogue dans l'admin ── */
