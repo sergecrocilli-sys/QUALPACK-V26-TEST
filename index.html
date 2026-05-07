@@ -5531,7 +5531,11 @@ function renderDashboardPro() {
     ? Math.round((conformes / totalPesees) * 100)
     : 0;
 
-  const totalMesures = pF.reduce((acc, s) => acc + (Array.isArray(s.v) ? s.v.length : 0), 0);
+  const totalMesures = pF.reduce((acc, s) => {
+  const arr = Array.isArray(s.v) ? s.v : [];
+  const n = arr.length || Number(s.nb_pesees) || Number(s.nbPesees) || Number(s.pesees) || Number(s.n) || 0;
+  return acc + n;
+}, 0);
 
   const totalTU1 = pF.reduce((acc, s) => acc + (Number(s.tu1) || Number(s.nbTU1) || 0), 0);
   const totalTU2 = pF.reduce((acc, s) => acc + (Number(s.tu2) || Number(s.nbTU2) || 0), 0);
