@@ -503,6 +503,360 @@ html, body {
 }
 
 /* ============================================================
+   DASHBOARD PRO COCKPIT V26
+   ============================================================ */
+
+.dash-pro-cockpit {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 16px;
+  min-height: calc(100vh - 190px);
+}
+
+.dash-pro-sidebar,
+.dash-pro-panel,
+.dash-pro-kpi {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.dash-pro-sidebar {
+  padding: 16px;
+}
+
+.dash-pro-side-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: .08em;
+  margin-bottom: 14px;
+}
+
+.dash-pro-side-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-pro-side-item span {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.dash-pro-side-item strong {
+  display: block;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.dash-pro-main {
+  min-width: 0;
+}
+
+.dash-pro-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.dash-pro-top h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.dash-pro-top p {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.dash-pro-badge {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dash-pro-badge.ok { background: var(--green-bg); color: var(--green-text); }
+.dash-pro-badge.warn { background: var(--orange-bg); color: var(--orange-text); }
+.dash-pro-badge.err { background: var(--red-bg); color: var(--red-text); }
+
+.dash-pro-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.dash-pro-kpi {
+  padding: 14px;
+  min-height: 96px;
+}
+
+.dash-pro-kpi span {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.dash-pro-kpi strong {
+  display: block;
+  font-size: 27px;
+  font-family: var(--font-mono);
+  margin-top: 8px;
+}
+
+.dash-pro-kpi strong.ok { color: var(--green-text); }
+.dash-pro-kpi strong.warn { color: var(--orange-text); }
+.dash-pro-kpi strong.err { color: var(--red-text); }
+
+.dash-pro-kpi small {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.dash-pro-grid-main {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dash-pro-panel {
+  padding: 14px;
+  min-width: 0;
+}
+
+.dash-pro-panel-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dash-pro-spark {
+  height: 150px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 6px 0;
+}
+
+.dash-pro-spark i {
+  flex: 1;
+  display: block;
+  background: var(--green);
+  border-radius: 6px 6px 0 0;
+  opacity: .85;
+}
+
+.dash-pro-chart-caption {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+
+.dash-pro-donut {
+  width: 138px;
+  height: 138px;
+  border-radius: 50%;
+  margin: 4px auto 10px;
+  background:
+    conic-gradient(
+      var(--red) 0 calc(var(--tu1) * 1%),
+      var(--orange) calc(var(--tu1) * 1%) calc((var(--tu1) + var(--tu2)) * 1%),
+      var(--green) 0 100%
+    );
+  display: grid;
+  place-items: center;
+}
+
+.dash-pro-donut > div {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.dash-pro-donut strong {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.dash-pro-donut span {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.dash-pro-legend {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.dash-pro-legend b {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.red-dot { background: var(--red); }
+.orange-dot { background: var(--orange); }
+
+.dash-pro-top-product {
+  display: grid;
+  grid-template-columns: 28px 1fr 48px 44px;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.dash-pro-top-product:last-child {
+  border-bottom: none;
+}
+
+.dash-pro-top-product span,
+.dash-pro-top-product em {
+  color: var(--text-muted);
+  font-style: normal;
+}
+
+.dash-pro-top-product b {
+  text-align: right;
+  color: var(--red-text);
+}
+
+.dash-pro-bottom {
+  display: grid;
+  grid-template-columns: 1.6fr .9fr;
+  gap: 12px;
+}
+
+.dash-pro-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.dash-pro-table th {
+  text-align: left;
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-pro-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dash-pro-status {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.dash-pro-status.ok {
+  background: var(--green-bg);
+  color: var(--green-text);
+}
+
+.dash-pro-status.warn {
+  background: var(--orange-bg);
+  color: var(--orange-text);
+}
+
+.dash-pro-alert {
+  border-left: 3px solid var(--border);
+  padding: 9px 10px;
+  background: var(--bg-surface);
+  border-radius: var(--r-md);
+  margin-bottom: 8px;
+}
+
+.dash-pro-alert.err { border-left-color: var(--red); }
+.dash-pro-alert.warn { border-left-color: var(--orange); }
+.dash-pro-alert.ok { border-left-color: var(--green); }
+
+.dash-pro-alert strong {
+  display: block;
+  font-size: 12px;
+}
+
+.dash-pro-alert span {
+  display: block;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.dash-pro-reco {
+  margin-top: 10px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-dark);
+  border-radius: var(--r-md);
+  padding: 10px;
+}
+
+.dash-pro-reco strong {
+  display: block;
+  color: var(--green-text);
+  font-size: 12px;
+}
+
+.dash-pro-reco span {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.dash-pro-empty {
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 12px 0;
+}
+
+@media (max-width: 1100px) {
+  .dash-pro-cockpit {
+    grid-template-columns: 1fr;
+  }
+
+  .dash-pro-sidebar {
+    display: none;
+  }
+
+  .dash-pro-kpis {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .dash-pro-grid-main,
+  .dash-pro-bottom {
+    grid-template-columns: 1fr;
+  }
+}
+    
+/* ============================================================
    LAYOUT DESKTOP — DASHBOARD QUALITÉ PRO V26
    ============================================================ */
 
