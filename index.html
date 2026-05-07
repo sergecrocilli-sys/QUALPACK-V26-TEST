@@ -5169,8 +5169,10 @@ function renderDashboardPro() {
   const totalPesees = pF.length;
   const totalDetecteurs = dF.length;
 
-  const conformes = pF.filter(x => x.verdict === 'OK').length;
-  const nonConformes = pF.filter(x => x.verdict !== 'OK').length;
+  const conformes = pF.filter(x => x.vF === 'ok').length;
+  const aSurveiller = pF.filter(x => x.vF === 'warn').length;
+  const critiques = pF.filter(x => x.vF === 'err').length;
+  const nonConformes = aSurveiller + critiques;
 
   const tauxConformite =
     totalPesees > 0
@@ -5181,16 +5183,18 @@ function renderDashboardPro() {
     return acc + (Array.isArray(s.v) ? s.v.length : 0);
   }, 0);
 
-  const completion = pF.reduce((acc, s) => {
-    const n = Array.isArray(s.v) ? s.v.length : 0;
-    const objectif = Number(s.n) || 20;
-    return acc + Math.min((n / objectif) * 100, 100);
-  }, 0);
+  const joursAvecActivite = [
+  ...new Set(
+    [...pF, ...dF]
+      .map(x => (x.date || x.now || '').split(' ')[0])
+      .filter(Boolean)
+  )
+].length;
 
   const tauxCompletion =
-    totalPesees > 0
-      ? Math.round(completion / totalPesees)
-      : 0;
+  dashPeriod
+    ? Math.round((Math.min(dashPeriod, joursAvecActivite) / dashPeriod) * 100)
+    : 100;
 
   body.innerHTML = `
 
