@@ -917,19 +917,54 @@ html, body {
 
 @media (min-width: 768px) {
 
-  .app {
-    max-width: 1180px;
+   .app {
+    max-width: none;
     width: 100%;
+    padding-left: 92px;
   }
 
   .content {
-    padding: 22px 28px;
+    padding: 16px 22px;
   }
 
   .bottom-nav {
-    max-width: 1180px;
-    margin: 0 auto;
-    width: 100%;
+    position: fixed;
+    left: 14px;
+    top: 92px;
+    bottom: 18px;
+    width: 68px;
+    height: auto;
+    z-index: 50;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    background: rgba(19, 34, 54, .96);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 10px 6px;
+
+    box-shadow: 0 18px 40px rgba(0,0,0,.28);
+  }
+
+  .bottom-nav .nav-item {
+    flex: 0;
+    height: 62px;
+    border-radius: 14px;
+    font-size: 9px;
+    padding: 7px 4px;
+  }
+
+  .bottom-nav .nav-item.active {
+    background: var(--blue-bg);
+    color: var(--blue-light);
+    border: 1px solid var(--blue-dark);
+  }
+
+  .bottom-nav .nav-item svg {
+    width: 21px;
+    height: 21px;
   }
 
   #screen-dashboard .dash-toolbar {
