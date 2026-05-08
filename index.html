@@ -5799,11 +5799,14 @@ function renderDashboardMobile() {
   dateEl.textContent = new Date().toLocaleDateString('fr-FR', { weekday:'short', day:'numeric', month:'short' });
 
   const pBase = filterByPeriod(sessions, dashPeriod);
-  const dBase = filterByPeriod(dets, dashPeriod);
-  const pPrevBase = filterPrevPeriod(sessions, dashPeriod);
-  const dPrevBase = filterPrevPeriod(dets, dashPeriod);
-  const { p: pF, d: dF } = applyDashFilters(pBase, dBase);
-  const { p: pPrev, d: dPrev } = applyDashFilters(pPrevBase, dPrevBase);
+const dBase = filterByPeriod(dets, dashPeriod);
+const pPrevBase = filterPrevPeriod(sessions, dashPeriod);
+const dPrevBase = filterPrevPeriod(dets, dashPeriod);
+
+const { p: pF, d: dF } = applyDashFilters(pBase, dBase);
+const { p: pPrev, d: dPrev } = applyDashFilters(pPrevBase, dPrevBase);
+
+updateDesktopSideFilters();
 
   if (!pF.length && !dF.length) {
     body.innerHTML = `<div class="empty-dash"><div class="ed-icon">📊</div><div class="ed-title">Aucune donnée sur la période</div><div class="ed-sub">Élargis la période ou enlève les filtres pour afficher le dashboard.</div></div>`;
