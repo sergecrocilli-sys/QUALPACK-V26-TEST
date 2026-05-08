@@ -5645,9 +5645,8 @@ function renderDashboardPro() {
     ofMap[of].last = s.date || s.now || ofMap[of].last;
   });
 
-  const ofRows = Object.values(ofMap)
-    .sort((a, b) => String(b.last).localeCompare(String(a.last)))
-    .slice(0, 5);
+ const ofRows = Object.values(ofMap)
+  .sort((a, b) => String(b.last).localeCompare(String(a.last)));
 
   const alerts = [];
   pF.filter(s => s.vF !== 'ok').slice(0, 3).forEach(s => {
