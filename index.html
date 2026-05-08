@@ -4584,6 +4584,29 @@ function populateDashFilters() {
   prodSel.value = dashFilters.product || '';
 }
 
+function updateDesktopSideFilters() {
+  const periodEl = document.getElementById('side-filter-period');
+  const clientEl = document.getElementById('side-filter-client');
+  const productEl = document.getElementById('side-filter-product');
+  const statusEl = document.getElementById('side-filter-status');
+
+  if (!periodEl || !clientEl || !productEl || !statusEl) return;
+
+  periodEl.textContent = dashPeriod
+    ? `${dashPeriod} jours`
+    : 'Tout historique';
+
+  clientEl.textContent = dashFilters.client || 'Tous';
+
+  productEl.textContent = dashFilters.product || 'Tous';
+
+  statusEl.textContent =
+    dashFilters.status === 'ok' ? 'Conformes' :
+    dashFilters.status === 'warn' ? 'À surveiller' :
+    dashFilters.status === 'err' ? 'Non conformes' :
+    'Tous';
+}
+
 function applyDashFilters(pItems, dItems) {
   let p = [...pItems];
   let d = [...dItems];
