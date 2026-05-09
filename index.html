@@ -6064,6 +6064,16 @@ function renderDashboardPro() {
     });
   });
 
+  const badgeClass =
+  critiques > 0 ? 'err' :
+  aSurveiller > 0 ? 'warn' :
+  'ok';
+
+  const badgeText =
+  critiques > 0 ? 'Action qualité requise' :
+  aSurveiller > 0 ? 'À surveiller' :
+  'Situation conforme';
+
   const repartitionNC = nonConformes || totalTU1 || totalTU2;
   const tu1Pct = repartitionNC ? Math.round((totalTU1 / repartitionNC) * 100) : 0;
   const tu2Pct = repartitionNC ? Math.round((totalTU2 / repartitionNC) * 100) : 0;
