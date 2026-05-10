@@ -721,6 +721,33 @@ html, body {
   color: #7dc3ff;
 }
 
+.dash-kpi-progress {
+  height: 7px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.dash-kpi-progress > div {
+  height: 100%;
+  width: calc(var(--qp) * 1%);
+  border-radius: 999px;
+}
+
+.dash-kpi-progress.ok > div {
+  background: linear-gradient(90deg, var(--green), var(--green-text));
+}
+
+.dash-kpi-progress.warn > div {
+  background: linear-gradient(90deg, var(--orange), var(--orange-text));
+}
+
+.dash-kpi-progress.err > div {
+  background: linear-gradient(90deg, var(--red), var(--red-text));
+}
+
 /* ============================================================
    COURBE CONFORMITÉ V26
    ============================================================ */
