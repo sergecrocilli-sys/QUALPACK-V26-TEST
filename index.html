@@ -6149,10 +6149,13 @@ function renderDashboardPro() {
   </div>
 
   <div class="dash-pro-kpi">
-    <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
-    <strong class="${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
-    <small>${joursAvecActivite} jour(s) actif(s)</small>
+  <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
+  <strong class="${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
+  <small>${joursAvecActivite} jour(s) actif(s)</small>
+  <div class="dash-kpi-progress ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}" style="--qp:${tauxCompletion};">
+    <div></div>
   </div>
+</div>
 
   <div class="dash-pro-kpi">
     <span class="dash-kpi-title ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">Défauts TU1</span>
