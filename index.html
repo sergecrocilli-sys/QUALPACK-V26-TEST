@@ -6276,7 +6276,20 @@ function renderDashboardPro() {
 
   const sparkValues = [72, 78, 81, tauxConformite, Math.max(0, tauxConformite - 6), tauxConformite, Math.min(100, tauxConformite + 3)];
 
-  body.innerHTML = `
+const periodeFin = new Date();
+const periodeDebut = new Date();
+
+if (dashPeriod) {
+  periodeDebut.setDate(periodeFin.getDate() - dashPeriod + 1);
+}
+
+const periodeDebutTxt = dashPeriod
+  ? periodeDebut.toLocaleDateString('fr-FR')
+  : 'début historique';
+
+const periodeFinTxt = periodeFin.toLocaleDateString('fr-FR');
+
+body.innerHTML = `
     <div class="dash-pro-cockpit">
 
       <aside class="dash-pro-sidebar">
