@@ -6198,10 +6198,11 @@ function renderDashboardPro() {
   </div>
 
   <div class="dash-pro-kpi">
-    <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
-    <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">${tauxConformite}%</strong>
-    <small>${conformes} / ${totalPesees} conformes</small>
-  </div>
+  <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
+  <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">${tauxConformite}%</strong>
+  <small>${conformes} / ${totalPesees} conformes</small>
+  <div class="dash-kpi-donut ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}" style="--donut-value:${Math.max(0, Math.min(100, tauxConformite))};"></div>
+</div>
 
   <div class="dash-pro-kpi">
     <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
