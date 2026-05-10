@@ -6249,10 +6249,13 @@ function renderDashboardPro() {
 </div>
 
   <div class="dash-pro-kpi">
-    <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
-    <strong class="${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">${nonConformes}</strong>
-    <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
+  <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
+  <strong class="${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">${nonConformes}</strong>
+  <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
+  <div class="dash-kpi-gauge ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}" style="--gauge-value:${nonConformes === 0 ? 8 : nonConformes === 1 ? 45 : 100};">
+    <div></div>
   </div>
+</div>
 
   <div class="dash-pro-kpi">
   <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
