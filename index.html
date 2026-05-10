@@ -826,6 +826,27 @@ html, body {
   background: linear-gradient(90deg, #ef4444, #fca5a5);
 }
 
+.dash-kpi-sparkline {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 72px;
+  height: 34px;
+  opacity: .95;
+}
+
+.dash-kpi-sparkline polyline {
+  fill: none;
+  stroke: #7dc3ff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dash-kpi-sparkline polygon {
+  fill: rgba(125,195,255,.10);
+}
+
 /* ============================================================
    COURBE CONFORMITÉ V26
    ============================================================ */
@@ -6234,12 +6255,16 @@ function renderDashboardPro() {
           <span class="dash-pro-badge ${badgeClass}">${badgeText}</span>
         </div>
 
-        <div class="dash-pro-kpis">
-  <div class="dash-pro-kpi">
-    <span class="dash-kpi-title info">Contrôles réalisés</span>
-    <strong>${totalPesees}</strong>
-    <small>${totalMesures} pesées</small>
-  </div>
+        <div class="dash-pro-kpi">
+  <span class="dash-kpi-title info">Contrôles réalisés</span>
+  <strong>${totalPesees}</strong>
+  <small>${totalMesures} pesées</small>
+
+  <svg class="dash-kpi-sparkline" viewBox="0 0 72 34" aria-hidden="true">
+    <polygon points="0,34 0,28 12,24 24,26 36,15 48,20 60,8 72,14 72,34"></polygon>
+    <polyline points="0,28 12,24 24,26 36,15 48,20 60,8 72,14"></polyline>
+  </svg>
+</div>
 
   <div class="dash-pro-kpi">
   <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
