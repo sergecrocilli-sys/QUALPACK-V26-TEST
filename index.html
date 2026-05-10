@@ -6255,41 +6255,41 @@ function renderDashboardPro() {
           <span class="dash-pro-badge ${badgeClass}">${badgeText}</span>
         </div>
 
-        <div class="dash-pro-kpi">
-  <span class="dash-kpi-title info">Contrôles réalisés</span>
-  <strong>${totalPesees}</strong>
-  <small>${totalMesures} pesées</small>
-
-  <svg class="dash-kpi-sparkline" viewBox="0 0 72 34" aria-hidden="true">
-    <polygon points="0,34 0,28 12,24 24,26 36,15 48,20 60,8 72,14 72,34"></polygon>
-    <polyline points="0,28 12,24 24,26 36,15 48,20 60,8 72,14"></polyline>
-  </svg>
-</div>
-
+        <div class="dash-pro-kpis">
   <div class="dash-pro-kpi">
-  <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
-  <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">${tauxConformite}%</strong>
-  <small>${conformes} / ${totalPesees} conformes</small>
-  <div class="dash-kpi-donut ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}" style="--donut-value:${Math.max(0, Math.min(100, tauxConformite))};"></div>
-</div>
-
-  <div class="dash-pro-kpi">
-  <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
-  <strong class="${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">${nonConformes}</strong>
-  <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
-  <div class="dash-kpi-gauge ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}" style="--gauge-value:${nonConformes === 0 ? 8 : nonConformes === 1 ? 45 : 100};">
-    <div></div>
+    <span class="dash-kpi-title info">Contrôles réalisés</span>
+    <strong>${totalPesees}</strong>
+    <small>${totalMesures} pesées</small>
+    <svg class="dash-kpi-sparkline" viewBox="0 0 72 34" aria-hidden="true">
+      <polygon points="0,34 0,28 12,24 24,26 36,15 48,20 60,8 72,14 72,34"></polygon>
+      <polyline points="0,28 12,24 24,26 36,15 48,20 60,8 72,14"></polyline>
+    </svg>
   </div>
-</div>
 
   <div class="dash-pro-kpi">
-  <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
-  <strong class="${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
-  <small>${joursAvecActivite} jour(s) actif(s)</small>
-  <div class="dash-kpi-progress ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}" style="--qp:${tauxCompletion};">
-    <div></div>
+    <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
+    <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">${tauxConformite}%</strong>
+    <small>${conformes} / ${totalPesees} conformes</small>
+    <div class="dash-kpi-donut ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}" style="--donut-value:${Math.max(0, Math.min(100, tauxConformite))};"></div>
   </div>
-</div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
+    <strong class="${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">${nonConformes}</strong>
+    <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
+    <div class="dash-kpi-gauge ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}" style="--gauge-value:${nonConformes === 0 ? 8 : nonConformes === 1 ? 45 : 100};">
+      <div></div>
+    </div>
+  </div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
+    <strong class="${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
+    <small>${joursAvecActivite} jour(s) actif(s)</small>
+    <div class="dash-kpi-progress ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}" style="--qp:${Math.max(0, Math.min(100, tauxCompletion))};">
+      <div></div>
+    </div>
+  </div>
 
   <div class="dash-pro-kpi">
     <span class="dash-kpi-title ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">Défauts TU1</span>
