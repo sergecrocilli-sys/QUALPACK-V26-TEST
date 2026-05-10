@@ -629,6 +629,7 @@ html, body {
 }
 
 .dash-pro-kpi {
+  position: relative;
   padding: 14px;
   min-height: 96px;
 }
@@ -749,16 +750,49 @@ html, body {
 }
 
 .dash-kpi-donut {
-  width: 34px;
-  height: 34px;
-  margin-top: 10px;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
+  width: 52px;
+  height: 52px;
+
   border-radius: 50%;
+
   background:
-    conic-gradient(var(--donut-color) calc(var(--donut-value) * 1%), rgba(255,255,255,.10) 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+    conic-gradient(
+      var(--donut-color) calc(var(--donut-value) * 1%),
+      rgba(255,255,255,.10) 0
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+.dash-kpi-donut::after {
+  content: "";
+
+  position: absolute;
+  inset: 10px;
+
+  border-radius: 50%;
+
+  background: #132236;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+.dash-kpi-donut.ok {
+  --donut-color: #22c55e;
+}
+
+.dash-kpi-donut.warn {
+  --donut-color: #f59e0b;
+}
+
+.dash-kpi-donut.err {
+  --donut-color: #ef4444;
 }
 
 .dash-kpi-donut::after {
