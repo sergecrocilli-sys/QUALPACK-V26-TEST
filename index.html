@@ -621,6 +621,35 @@ html, body {
 .dash-pro-badge.warn { background: var(--orange-bg); color: var(--orange-text); }
 .dash-pro-badge.err { background: var(--red-bg); color: var(--red-text); }
 
+.dash-pro-period-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  width: fit-content;
+  margin: 0 0 14px 0;
+  padding: 9px 13px;
+
+  border-radius: 13px;
+  background: rgba(19, 34, 54, .85);
+  border: 1px solid var(--border);
+
+  color: var(--text-secondary);
+}
+
+.dash-pro-period-card span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
+}
+
+.dash-pro-period-card strong {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
 .dash-pro-kpis {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
