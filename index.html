@@ -797,6 +797,35 @@ html, body {
   --donut-color: #ef4444;
 }
 
+.dash-kpi-gauge {
+  width: 100%;
+  height: 8px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.12);
+}
+
+.dash-kpi-gauge > div {
+  height: 100%;
+  width: calc(var(--gauge-value, 0) * 1%);
+  min-width: 4px;
+  border-radius: 999px;
+}
+
+.dash-kpi-gauge.ok > div {
+  background: linear-gradient(90deg, #22c55e, #86efac);
+}
+
+.dash-kpi-gauge.warn > div {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.dash-kpi-gauge.err > div {
+  background: linear-gradient(90deg, #ef4444, #fca5a5);
+}
+
 /* ============================================================
    COURBE CONFORMITÉ V26
    ============================================================ */
