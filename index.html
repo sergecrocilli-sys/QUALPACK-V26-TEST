@@ -6130,32 +6130,36 @@ function renderDashboardPro() {
         </div>
 
         <div class="dash-pro-kpis">
-          <div class="dash-pro-kpi">
-            <span>Contrôles réalisés</span>
-            <strong>${totalPesees}</strong>
-            <small>${totalMesures} pesées</small>
-          </div>
-          <div class="dash-pro-kpi">
-            <span>Taux conformité</span>
-            <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 80 ? 'warn' : 'err'}">${tauxConformite}%</strong>
-            <small>${conformes} / ${totalPesees} conformes</small>
-          </div>
-          <div class="dash-pro-kpi">
-            <span>Non-conformités</span>
-            <strong class="${nonConformes ? 'err' : 'ok'}">${nonConformes}</strong>
-            <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
-          </div>
-          <div class="dash-pro-kpi">
-            <span>Complétion</span>
-            <strong class="${tauxCompletion >= 95 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
-            <small>${joursAvecActivite} jour(s) actif(s)</small>
-          </div>
-          <div class="dash-pro-kpi">
-            <span>Défauts TU1</span>
-            <strong class="${totalTU1 ? 'warn' : 'ok'}">${totalTU1}</strong>
-            <small>défaut(s) TU1</small>
-          </div>
-        </div>
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title info">Contrôles réalisés</span>
+    <strong>${totalPesees}</strong>
+    <small>${totalMesures} pesées</small>
+  </div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">Taux conformité</span>
+    <strong class="${tauxConformite >= 95 ? 'ok' : tauxConformite >= 92 ? 'warn' : 'err'}">${tauxConformite}%</strong>
+    <small>${conformes} / ${totalPesees} conformes</small>
+  </div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">Non-conformités</span>
+    <strong class="${nonConformes === 0 ? 'ok' : nonConformes === 1 ? 'warn' : 'err'}">${nonConformes}</strong>
+    <small>${aSurveiller} à surveiller · ${critiques} critiques</small>
+  </div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">Complétion</span>
+    <strong class="${tauxCompletion >= 90 ? 'ok' : tauxCompletion >= 80 ? 'warn' : 'err'}">${tauxCompletion}%</strong>
+    <small>${joursAvecActivite} jour(s) actif(s)</small>
+  </div>
+
+  <div class="dash-pro-kpi">
+    <span class="dash-kpi-title ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">Défauts TU1</span>
+    <strong class="${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">${totalTU1}</strong>
+    <small>défaut(s) TU1</small>
+  </div>
+</div>
 
         <div class="dash-pro-grid-main">
          <div class="dash-pro-panel chart-panel">
