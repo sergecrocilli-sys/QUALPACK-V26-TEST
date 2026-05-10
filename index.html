@@ -748,6 +748,40 @@ html, body {
   background: linear-gradient(90deg, var(--red), var(--red-text));
 }
 
+.dash-kpi-donut {
+  width: 34px;
+  height: 34px;
+  margin-top: 10px;
+  border-radius: 50%;
+  background:
+    conic-gradient(var(--donut-color) calc(var(--donut-value) * 1%), rgba(255,255,255,.10) 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
+}
+
+.dash-kpi-donut::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #132236;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+}
+
+.dash-kpi-donut.ok {
+  --donut-color: #22c55e;
+}
+
+.dash-kpi-donut.warn {
+  --donut-color: #f59e0b;
+}
+
+.dash-kpi-donut.err {
+  --donut-color: #ef4444;
+}
+
 /* ============================================================
    COURBE CONFORMITÉ V26
    ============================================================ */
