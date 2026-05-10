@@ -847,6 +847,45 @@ html, body {
   fill: rgba(125,195,255,.10);
 }
 
+.dash-kpi-alert-icon {
+  position: absolute;
+  right: 20px;
+  bottom: 22px;
+
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  background: rgba(239,68,68,.12);
+  border: 1px solid rgba(239,68,68,.35);
+  color: #fca5a5;
+}
+
+.dash-kpi-alert-icon.ok {
+  background: rgba(34,197,94,.12);
+  border-color: rgba(34,197,94,.35);
+  color: #86efac;
+}
+
+.dash-kpi-alert-icon.warn {
+  background: rgba(245,158,11,.12);
+  border-color: rgba(245,158,11,.35);
+  color: #fbbf24;
+}
+
+.dash-kpi-alert-icon.err {
+  background: rgba(239,68,68,.12);
+  border-color: rgba(239,68,68,.35);
+  color: #fca5a5;
+}
+
 /* ============================================================
    COURBE CONFORMITÉ V26
    ============================================================ */
@@ -6292,9 +6331,12 @@ function renderDashboardPro() {
   </div>
 
   <div class="dash-pro-kpi">
-    <span class="dash-kpi-title ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">Défauts TU1</span>
-    <strong class="${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">${totalTU1}</strong>
-    <small>défaut(s) TU1</small>
+  <span class="dash-kpi-title ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">Défauts TU1</span>
+  <strong class="${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">${totalTU1}</strong>
+  <small>défaut(s) TU1</small>
+
+  <div class="dash-kpi-alert-icon ${totalTU1 === 0 ? 'ok' : totalTU1 === 1 ? 'warn' : 'err'}">
+    ${totalTU1 === 0 ? '✓' : totalTU1 === 1 ? '!' : '⚠'}
   </div>
 </div>
 
