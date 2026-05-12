@@ -3846,57 +3846,102 @@ window._lastPesee = {
 async function saveSession() {
   if (!window._lastPesee) return;
 
+  if (window._lastPeseeSaved === true) {
+    toast('Cette série de pesées est déjà enregistrée ✓', 'ok');
+    return;
+  }
+
+  if (window._savePeseeInProgress === true) return;
+  window._savePeseeInProgress = true;
+
+  const btn = document.getElementById('btn-save-pesee');
+  const oldText = btn ? btn.innerHTML : '';
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Enregistrement...';
+  }
+
   const { r, cli, op, of, now, prod, ligne_prod, tare_fixe_g, qn, tne, tu1_limite, moyGross } = window._lastPesee;
   const ligne = (ligne_prod || document.getElementById('inp-ligne').value || '').trim();
   const qte = parseInt(document.getElementById('inp-qte').value) || null;
 
   const record = {
-  id: 'pesee_' + Date.now(),
-  site_id: QUALPACK_SITE_ID,
-  type: 'pesee',
-  cli,
-  prod: prod.nom,
-  of,
-  op,
-  date: now,
-  ligne: ligne || null,
-  ligne_prod: ligne || null,
-  qte: qte,
-  qn: qn,
-  tne: tne,
-  tu1_limite: tu1_limite,
-  tare_fixe_g: tare_fixe_g,
-  moy: r.moy.toFixed(2),
-  et: r.et.toFixed(2),
-  tu1: r.tu1,
-  tu2: r.tu2,
-  maxTU1: r.maxTU1,
-  tauxTU1: Number.isFinite(r.tauxTU1) ? r.tauxTU1.toFixed(2) : '0.00',
-  vMoy: r.vMoy,
-  vDef: r.vDef,
-  vF: r.vF,
-  pesees: r.v,
-  synced: false
-};
+    id: window._lastPeseeId || ('pesee_' + Date.now()),
+    site_id: QUALPACK_SITE_ID,
+    type: 'pesee',
+    cli,
+    prod: prod.nom,
+    of,
+    op,
+    date: now,
+    ligne: ligne || null,
+    ligne_prod: ligne || null,
+    qte: qte,
+    qn: qn,
+    tne: tne,
+    tu1_limite: tu1_limite,
+    tare_fixe_g: tare_fixe_g,
+    moy: r.moy.toFixed(2),
+    et: r.et.toFixed(2),
+    tu1: r.tu1,
+    tu2: r.tu2,
+    maxTU1: r.maxTU1,
+    tauxTU1: Number.isFinite(r.tauxTU1) ? r.tauxTU1.toFixed(2) : '0.00',
+    vMoy: r.vMoy,
+    vDef: r.vDef,
+    vF: r.vF,
+    pesees: r.v,
+    synced: false
+  };
+
+  window._lastPeseeId = record.id;
 
   try {
     await savePesee(record);
     sessions.unshift(record);
+    window._lastPeseeSaved = true;
     toast('Relevé enregistré ✓', 'ok');
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '✅ Enregistré';
+    }
   } catch (e) {
     console.error('IndexedDB saveSession error:', e);
 
     try {
       const stored = JSON.parse(localStorage.getItem('qp_sessions') || '[]');
-      stored.unshift(record);
-      localStorage.setItem('qp_sessions', JSON.stringify(stored));
-      sessions.unshift(record);
+
+      const alreadyExists = stored.some(x => x && x.id === record.id);
+      if (!alreadyExists) {
+        stored.unshift(record);
+        localStorage.setItem('qp_sessions', JSON.stringify(stored));
+        sessions.unshift(record);
+      }
+
+      window._lastPeseeSaved = true;
       toast('Relevé enregistré (local) ✓', 'ok');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '✅ Enregistré';
+      }
     } catch (e2) {
+      window._savePeseeInProgress = false;
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = oldText || '💾 Enregistrer';
+      }
+
       toast('Erreur enregistrement', 'err');
       return;
     }
   }
+
+  window._savePeseeInProgress = false;
+}
 
   // Sync Supabase en arrière-plan seulement si disponible
   if (typeof syncPesee === 'function') {
