@@ -2258,7 +2258,7 @@ html, body {
           <div class="btn-row">
             <button class="btn btn-red" onclick="genPDF()" style="flex:1">📄 PDF</button>
             <button class="btn btn-green" onclick="genExcelPesee()" style="flex:1">📊 Excel</button>
-            <button class="btn btn-blue" onclick="saveSession()" style="flex:1">💾 Enregistrer</button>
+            <button class="btn btn-blue" id="btn-save-pesee" onclick="saveSession()" style="flex:1">💾 Enregistrer</button>
           </div>
           <button class="btn btn-ghost" onclick="newPesee()">+ Nouvelle saisie</button>
         </div>
@@ -2420,7 +2420,7 @@ html, body {
           <div class="btn-row">
             <button class="btn btn-red" onclick="genPDFdet()" style="flex:1">📄 PDF</button>
             <button class="btn btn-green" onclick="genExcelDet()" style="flex:1">📊 Excel</button>
-            <button class="btn btn-blue" onclick="saveDet()" style="flex:1">💾 Enregistrer</button>
+            <button class="btn btn-blue" id="btn-save-det" onclick="saveDet()" style="flex:1">💾 Enregistrer</button>
           </div>
           <button class="btn btn-ghost" onclick="newDet()">+ Nouveau test</button>
         </div>
