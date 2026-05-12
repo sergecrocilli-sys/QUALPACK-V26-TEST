@@ -6556,15 +6556,30 @@ body.innerHTML = `
 </div>
 
           <div class="dash-pro-panel">
-            <div class="dash-pro-panel-title">Répartition des non-conformités</div>
-            <div class="dash-pro-donut" style="--tu1:${tu1Pct};--tu2:${tu2Pct};">
-              <div><strong>${repartitionNC}</strong><span>Total</span></div>
-            </div>
-            <div class="dash-pro-legend">
-              <span><b class="red-dot"></b>TU1 : ${totalTU1}</span>
-              <span><b class="orange-dot"></b>TU2 : ${totalTU2}</span>
-            </div>
-          </div>
+  <div class="dash-pro-panel-title">Surveillance détecteurs</div>
+
+  <div class="dash-detector-watch">
+    <div class="dash-detector-row ok">
+      <span>✅ Tests conformes</span>
+      <strong>${detOkCount}</strong>
+    </div>
+
+    <div class="dash-detector-row warn">
+      <span>⚠️ Tests non conformes</span>
+      <strong>${detKoCount}</strong>
+    </div>
+
+    <div class="dash-detector-row neutral">
+      <span>🕒 Dernier test</span>
+      <strong>${lastDetText}</strong>
+    </div>
+
+    <div class="dash-detector-row danger">
+      <span>🚨 Dernier échec</span>
+      <strong>${lastDetFailText}</strong>
+    </div>
+  </div>
+</div>
 
           <div class="dash-pro-panel">
             <div class="dash-pro-panel-title">Top 3 produits — taux NC</div>
