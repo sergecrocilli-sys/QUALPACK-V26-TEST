@@ -4073,8 +4073,24 @@ function goDS3() {
 async function saveDet() {
   if (!window._lastDet) return;
 
+  if (window._lastDetSaved === true) {
+    toast('Ce test détecteur est déjà enregistré ✓', 'ok');
+    return;
+  }
+
+  if (window._saveDetInProgress === true) return;
+  window._saveDetInProgress = true;
+
+  const btn = document.getElementById('btn-save-det');
+  const oldText = btn ? btn.innerHTML : '';
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Enregistrement...';
+  }
+
   const record = {
-    id: 'det_' + Date.now(),
+    id: window._lastDetId || ('det_' + Date.now()),
     site_id: QUALPACK_SITE_ID,
     type: 'det',
     ligne: window._lastDet.ligne_prod || null,
@@ -4082,24 +4098,57 @@ async function saveDet() {
     synced: false
   };
 
+  window._lastDetId = record.id;
+
   try {
     await saveDetecteur(record);
-    dets.unshift(record);
+
+    const alreadyInMemory = dets.some(x => x && x.id === record.id);
+    if (!alreadyInMemory) dets.unshift(record);
+
+    window._lastDetSaved = true;
     toast('Test enregistré ✓', 'ok');
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '✅ Enregistré';
+    }
   } catch (e) {
     console.error('IndexedDB saveDet error:', e);
 
     try {
       const stored = JSON.parse(localStorage.getItem('qp_dets') || '[]');
-      stored.unshift(record);
-      localStorage.setItem('qp_dets', JSON.stringify(stored));
-      dets.unshift(record);
+
+      const alreadyExists = stored.some(x => x && x.id === record.id);
+      if (!alreadyExists) {
+        stored.unshift(record);
+        localStorage.setItem('qp_dets', JSON.stringify(stored));
+      }
+
+      const alreadyInMemory = dets.some(x => x && x.id === record.id);
+      if (!alreadyInMemory) dets.unshift(record);
+
+      window._lastDetSaved = true;
       toast('Test enregistré (local) ✓', 'ok');
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '✅ Enregistré';
+      }
     } catch (e2) {
+      window._saveDetInProgress = false;
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = oldText || '💾 Enregistrer';
+      }
+
       toast('Erreur enregistrement', 'err');
       return;
     }
   }
+
+  window._saveDetInProgress = false;
 
   // Sync Supabase en arrière-plan seulement si disponible
   if (typeof syncDetecteur === 'function') {
@@ -4111,7 +4160,19 @@ async function saveDet() {
     }
   }
 }
+
 function newDet() {
+  window._lastDet = null;
+  window._lastDetId = null;
+  window._lastDetSaved = false;
+  window._saveDetInProgress = false;
+
+  const btnSave = document.getElementById('btn-save-det');
+  if (btnSave) {
+    btnSave.disabled = false;
+    btnSave.innerHTML = '💾 Enregistrer';
+  }
+
   showStep('detecteur', 1);
   ['d-equip','d-op','d-of','d-type','d-ligne'].forEach(id => document.getElementById(id).value = '');
   detecteurManualOverride = false;
@@ -4120,7 +4181,6 @@ function newDet() {
   populateDetecteurSelect('', '');
   document.getElementById('btn-ds1').disabled = true;
 }
-
 /* ================================================================
    HISTORIQUE
    ================================================================ */
