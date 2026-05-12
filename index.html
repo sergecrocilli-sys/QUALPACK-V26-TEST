@@ -3955,6 +3955,17 @@ async function saveSession() {
 }
 
 function newPesee() {
+  window._lastPesee = null;
+  window._lastPeseeId = null;
+  window._lastPeseeSaved = false;
+  window._savePeseeInProgress = false;
+
+  const btnSave = document.getElementById('btn-save-pesee');
+  if (btnSave) {
+    btnSave.disabled = false;
+    btnSave.innerHTML = '💾 Enregistrer';
+  }
+
   showStep('pesees', 1);
   document.getElementById('sel-client').value = '';
   populateProduitSelect('');
