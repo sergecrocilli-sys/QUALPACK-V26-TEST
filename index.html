@@ -6422,6 +6422,26 @@ function renderDashboardPro() {
   const tu1Pct = repartitionNC ? Math.round((totalTU1 / repartitionNC) * 100) : 0;
   const tu2Pct = repartitionNC ? Math.round((totalTU2 / repartitionNC) * 100) : 0;
 
+  const detOkCount = dF.filter(d => d && d.vF === 'ok').length;
+const detKoCount = dF.filter(d => d && d.vF !== 'ok').length;
+
+const sortedDets = [...dF].sort((a, b) => {
+  const da = new Date(a.now || a.date || 0);
+  const db = new Date(b.now || b.date || 0);
+  return db - da;
+});
+
+const lastDet = sortedDets[0] || null;
+const lastDetKo = sortedDets.find(d => d && d.vF !== 'ok') || null;
+
+const lastDetText = lastDet
+  ? (lastDet.now || lastDet.date || 'Renseigné')
+  : 'Aucun test';
+
+const lastDetFailText = lastDetKo
+  ? (lastDetKo.ligne_prod || lastDetKo.ligne || lastDetKo.eq || 'Échec détecteur')
+  : 'Aucun échec';
+
   const sparkValues = [72, 78, 81, tauxConformite, Math.max(0, tauxConformite - 6), tauxConformite, Math.min(100, tauxConformite + 3)];
 
 const periodeFin = new Date();
