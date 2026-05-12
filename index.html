@@ -3941,7 +3941,6 @@ async function saveSession() {
   }
 
   window._savePeseeInProgress = false;
-}
 
   // Sync Supabase en arrière-plan seulement si disponible
   if (typeof syncPesee === 'function') {
@@ -3953,7 +3952,7 @@ async function saveSession() {
     }
   }
 }
-
+  
 function newPesee() {
   window._lastPesee = null;
   window._lastPeseeId = null;
