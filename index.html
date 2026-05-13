@@ -147,6 +147,10 @@
       box-shadow:0 10px 24px rgba(17,45,78,.10);
     }
 
+    .btn.secondary:hover {
+      background: #F4F8FD;
+    }
+
     .trust {
       display:grid;
       grid-template-columns:repeat(3, 1fr);
@@ -517,17 +521,20 @@
   </footer>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const siteId = params.get('site_id');
+  const params = new URLSearchParams(window.location.search);
+  const siteId = params.get('site_id');
 
-    const targetUrl = siteId
-      ? `app.html?site_id=${encodeURIComponent(siteId)}`
-      : 'app.html?site_id=codex_test';
+  const targetUrl = siteId
+    ? `app.html?site_id=${encodeURIComponent(siteId)}`
+    : 'app.html?site_id=codex_test';
 
-    ['access-app', 'header-access-app', 'discover-app', 'access-app-hero'].forEach((id) => {
-      const btn = document.getElementById(id);
-      if (btn) btn.href = targetUrl;
-    });
-  </script>
+  ['access-app', 'header-access-app', 'access-app-hero'].forEach((id) => {
+    const btn = document.getElementById(id);
+    if (btn) btn.href = targetUrl;
+  });
+
+  const discoverBtn = document.getElementById('discover-app');
+  if (discoverBtn) discoverBtn.href = '#fonctionnalites';
+</script>
 </body>
 </html>
