@@ -152,7 +152,8 @@ function getQualPackSiteIdForSync() {
     const stored = localStorage.getItem('qp_site_id');
     if (stored) return stored;
   } catch (e) {}
-  return 'traiteur_de_la_thur';
+
+  throw new Error('Site QUALPACK introuvable : synchronisation bloquée.');
 }
 
 /* ================================
